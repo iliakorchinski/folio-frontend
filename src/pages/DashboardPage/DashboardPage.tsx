@@ -9,6 +9,8 @@ import {
   FileList,
   Toast,
 } from '@/features/dashboard';
+import { ContextMenu, useDeleteMenuItem } from '@/shared/ui/ContextMenu/ContextMenu';
+import { ConfirmModal } from '@/shared/ui/ConfirmModal/ConfirmModal';
 import * as S from './styles.js';
 
 export function DashboardPage() {
@@ -20,7 +22,13 @@ export function DashboardPage() {
     filtered, filteredEmpty,
     totalCount,
     open, handleUpload,
+    menuState, openMenu, closeMenu,
+    confirmFile, requestDelete, confirmDelete, cancelDelete,
   } = useFiles();
+
+  const deleteMenuItem = useDeleteMenuItem(() => {
+    if (menuState) requestDelete(menuState.id);
+  });
 
   return (
     <div style={S.root}>
@@ -34,10 +42,10 @@ export function DashboardPage() {
           <SectionHeader count={totalCount} view={view} onViewChange={setView} />
 
           {!filteredEmpty && view === 'grid' && (
-            <FileGrid files={filtered} addedId={addedId} onOpen={open} />
+            <FileGrid files={filtered} addedId={addedId} onOpen={open} onContextMenu={openMenu} />
           )}
           {!filteredEmpty && view === 'list' && (
-            <FileList files={filtered} addedId={addedId} onOpen={open} />
+            <FileList files={filtered} addedId={addedId} onOpen={open} onMenu={openMenu} />
           )}
           {filteredEmpty && (
             <div style={S.emptyState}>{t('files.empty')}</div>
@@ -46,6 +54,24 @@ export function DashboardPage() {
       </div>
 
       <Toast message={toast} />
+
+      {menuState && (
+        <ContextMenu
+          x={menuState.x}
+          y={menuState.y}
+          items={[deleteMenuItem]}
+          onClose={closeMenu}
+        />
+      )}
+
+      {confirmFile && (
+        <ConfirmModal
+          title={t('confirmModal.deleteTitle')}
+          description={t('confirmModal.deleteBody', { name: confirmFile.name })}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
     </div>
   );
 }

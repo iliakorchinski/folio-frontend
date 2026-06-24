@@ -4,8 +4,12 @@ export interface FileDto {
   id: string;
   name: string;
   size: number;
-  path: string;
+  key: string;
   createdAt: string;
+}
+
+export interface FileDtoWithUrl extends FileDto {
+  url: string;
 }
 
 export const filesApi = createApi({
@@ -17,6 +21,9 @@ export const filesApi = createApi({
       query: () => '/files',
       providesTags: ['Files'],
     }),
+    getFile: builder.query<FileDtoWithUrl, string>({
+      query: (id) => `/files/${id}`,
+    }),
     uploadFile: builder.mutation<FileDto, File>({
       query: (file) => {
         const formData = new FormData();
@@ -25,7 +32,11 @@ export const filesApi = createApi({
       },
       invalidatesTags: ['Files'],
     }),
+    deleteFile: builder.mutation<void, string>({
+      query: (id) => ({ url: `/files/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['Files'],
+    }),
   }),
 });
 
-export const { useGetFilesQuery, useUploadFileMutation } = filesApi;
+export const { useGetFilesQuery, useGetFileQuery, useUploadFileMutation, useDeleteFileMutation } = filesApi;

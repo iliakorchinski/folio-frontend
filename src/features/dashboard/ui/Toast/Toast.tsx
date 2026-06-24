@@ -1,4 +1,5 @@
-import CheckIcon from '@mui/icons-material/Check';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import * as S from './styles.js';
 
 interface ToastProps {
@@ -10,7 +11,7 @@ export function Toast({ message }: ToastProps) {
 
   return (
     <div style={S.root}>
-      <CheckIcon sx={{ fontSize: 16, color: '#E8502E' }} />
+      <FontAwesomeIcon icon={faCheck} style={{ fontSize: 14, color: '#E8502E' }} />
       {message}
     </div>
   );

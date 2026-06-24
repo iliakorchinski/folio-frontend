@@ -52,5 +52,14 @@
   "toast": {
     "fileUploaded": "File uploaded — open in editor?",
     "opening": "Opening «{{name}}» in editor…"
+  },
+  "contextMenu": {
+    "delete": "Delete"
+  },
+  "confirmModal": {
+    "deleteTitle": "Delete file?",
+    "deleteBody": "\"{{name}}\" will be permanently deleted.",
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

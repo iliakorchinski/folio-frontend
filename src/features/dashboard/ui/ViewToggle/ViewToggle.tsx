@@ -1,5 +1,5 @@
-import GridViewIcon from '@mui/icons-material/GridView';
-import ViewListIcon from '@mui/icons-material/ViewList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGrip, faList } from '@fortawesome/free-solid-svg-icons';
 import * as S from './styles.js';
 
 interface ViewToggleProps {
@@ -13,8 +13,8 @@ export function ViewToggle({ view, onChange }: ViewToggleProps) {
       {(['grid', 'list'] as const).map(v => (
         <button key={v} onClick={() => onChange(v)} style={S.button(view === v)}>
           {v === 'grid'
-            ? <GridViewIcon sx={{ fontSize: 16 }} />
-            : <ViewListIcon sx={{ fontSize: 16 }} />
+            ? <FontAwesomeIcon icon={faGrip} style={{ fontSize: 15 }} />
+            : <FontAwesomeIcon icon={faList} style={{ fontSize: 15 }} />
           }
         </button>
       ))}

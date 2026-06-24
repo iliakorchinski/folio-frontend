@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import SearchIcon from '@mui/icons-material/Search';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useHover } from '@/shared/hooks/useHover';
 import * as S from './styles.js';
 
@@ -25,7 +25,7 @@ export function TopBar({ q, setQ, onUpload }: TopBarProps) {
   return (
     <div style={S.root}>
       <div style={S.searchBox}>
-        <SearchIcon sx={{ fontSize: 16, color: '#8C887F', flexShrink: 0 }} />
+        <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: 14, color: '#8C887F', flexShrink: 0 }} />
         <input
           value={q}
           onChange={e => setQ(e.target.value)}
@@ -44,7 +44,7 @@ export function TopBar({ q, setQ, onUpload }: TopBarProps) {
         onChange={handleChange}
       />
       <button onClick={() => inputRef.current?.click()} {...hoverProps} style={S.uploadButton(hovered)}>
-        <FileUploadIcon sx={{ fontSize: 16 }} />
+        <FontAwesomeIcon icon={faArrowUpFromBracket} style={{ fontSize: 14 }} />
         {t('topBar.upload')}
       </button>
     </div>

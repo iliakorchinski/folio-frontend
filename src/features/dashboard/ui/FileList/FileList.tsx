@@ -6,10 +6,11 @@ import * as S from './styles.js';
 interface FileListProps {
   files: PdfFile[];
   addedId: string | null;
-  onOpen: (name: string) => void;
+  onOpen: (id: string) => void;
+  onMenu: (id: string, x: number, y: number) => void;
 }
 
-export function FileList({ files, addedId, onOpen }: FileListProps) {
+export function FileList({ files, addedId, onOpen, onMenu }: FileListProps) {
   const { t } = useTranslation();
 
   return (
@@ -28,6 +29,7 @@ export function FileList({ files, addedId, onOpen }: FileListProps) {
           file={file}
           isNew={file.id === addedId}
           onOpen={onOpen}
+          onMenu={onMenu}
         />
       ))}
     </div>

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { useHover } from '@/shared/hooks/useHover';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { PdfPreview } from '../PdfPreview/PdfPreview';
 import type { PdfFile } from '@/shared/types/file';
 import * as S from './styles.js';
@@ -8,16 +9,23 @@ import * as S from './styles.js';
 interface FileRowProps {
   file: PdfFile;
   isNew: boolean;
-  onOpen: (name: string) => void;
+  onOpen: (id: string) => void;
+  onMenu: (id: string, x: number, y: number) => void;
 }
 
-export function FileRow({ file, isNew, onOpen }: FileRowProps) {
+export function FileRow({ file, isNew, onOpen, onMenu }: FileRowProps) {
   const { t } = useTranslation();
   const { hovered, hoverProps } = useHover();
   const { hovered: dotsHovered, hoverProps: dotsHoverProps } = useHover();
 
+  function handleDotsClick(e: React.MouseEvent) {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    onMenu(file.id, rect.left, rect.bottom + 4);
+  }
+
   return (
-    <div onClick={() => onOpen(file.name)} {...hoverProps} style={S.root(hovered)}>
+    <div onClick={() => onOpen(file.id)} {...hoverProps} style={S.root(hovered)}>
       <div style={S.info}>
         <PdfPreview variant="list" />
         <div style={S.nameGroup}>
@@ -34,11 +42,11 @@ export function FileRow({ file, isNew, onOpen }: FileRowProps) {
       <div style={S.colModified}>{file.modified}</div>
       <div style={S.colActions}>
         <div
-          onClick={e => e.stopPropagation()}
+          onClick={handleDotsClick}
           {...dotsHoverProps}
           style={S.dotsButton(dotsHovered)}
         >
-          <MoreHorizIcon sx={{ fontSize: 18, color: '#A29D92' }} />
+          <FontAwesomeIcon icon={faEllipsis} style={{ fontSize: 16, color: '#A29D92' }} />
         </div>
       </div>
     </div>

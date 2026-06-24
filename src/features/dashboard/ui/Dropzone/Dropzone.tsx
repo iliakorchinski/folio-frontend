@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { useHover } from '@/shared/hooks/useHover';
 import * as S from './styles.js';
 
@@ -51,7 +52,7 @@ export function Dropzone({ onUpload }: DropzoneProps) {
         onChange={handleChange}
       />
       <div style={S.iconWrap}>
-        <FileUploadIcon sx={{ fontSize: 24, color: '#E8502E' }} />
+        <FontAwesomeIcon icon={faArrowUpFromBracket} style={{ fontSize: 22, color: '#E8502E' }} />
       </div>
       <div>
         <div style={S.title}>{t('dropzone.title')}</div>

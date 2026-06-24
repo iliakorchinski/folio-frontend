@@ -1,32 +1,32 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faStar, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { useHover } from '@/shared/hooks/useHover';
 import * as S from './styles.js';
 
 type NavKey = 'allFiles' | 'recent' | 'favorites' | 'trash';
 
-const NAV_ITEMS: { key: NavKey; Icon: React.ElementType }[] = [
-  { key: 'allFiles', Icon: MenuIcon },
-  { key: 'recent', Icon: AccessTimeIcon },
-  { key: 'favorites', Icon: StarBorderIcon },
-  { key: 'trash', Icon: DeleteOutlineIcon },
+const NAV_ITEMS: { key: NavKey; icon: IconDefinition }[] = [
+  { key: 'allFiles', icon: faBars },
+  { key: 'recent', icon: faClock },
+  { key: 'favorites', icon: faStar },
+  { key: 'trash', icon: faTrashCan },
 ];
 
-function NavItem({ label, active, onActivate, Icon }: {
+function NavItem({ label, active, onActivate, icon }: {
   label: string;
   active: boolean;
   onActivate: () => void;
-  Icon: React.ElementType;
+  icon: IconDefinition;
 }) {
   const { hovered, hoverProps } = useHover();
 
   return (
     <div onClick={onActivate} {...hoverProps} style={S.navItem(active, hovered)}>
-      <Icon sx={{ fontSize: 17 }} />
+      <FontAwesomeIcon icon={icon} style={{ fontSize: 15, width: 16 }} />
       {label}
     </div>
   );
@@ -55,7 +55,7 @@ export function Sidebar() {
             label={t(`nav.${item.key}`)}
             active={active === item.key}
             onActivate={() => setActive(item.key)}
-            Icon={item.Icon}
+            icon={item.icon}
           />
         ))}
       </div>

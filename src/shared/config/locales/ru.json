@@ -52,5 +52,14 @@
   "toast": {
     "fileUploaded": "Файл загружен — открыть в редакторе?",
     "opening": "Открываем «{{name}}» в редакторе…"
+  },
+  "contextMenu": {
+    "delete": "Удалить"
+  },
+  "confirmModal": {
+    "deleteTitle": "Удалить файл?",
+    "deleteBody": "«{{name}}» будет удалён без возможности восстановления.",
+    "cancel": "Отмена",
+    "delete": "Удалить"
   }
 }
