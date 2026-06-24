@@ -1,7 +1,12 @@
 import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetFilesQuery, useUploadFileMutation, useDeleteFileMutation } from '@/shared/api/filesApi';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetFilesQuery, useDeleteFileMutation, filesApi } from '@/shared/api/filesApi';
+import type { FileDto } from '@/shared/api/filesApi';
+import type { AppDispatch, RootState } from '@/app/store';
 import type { PdfFile } from '@/shared/types/file';
+
+const API_BASE = 'http://localhost:3000';
 
 function formatSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} КБ`;
@@ -18,6 +23,11 @@ export interface MenuState {
   y: number;
 }
 
+interface UploadingState {
+  name: string;
+  progress: number;
+}
+
 export function useFiles() {
   const [q, setQ] = useState('');
   const [view, setView] = useState<'grid' | 'list'>('grid');
@@ -25,10 +35,12 @@ export function useFiles() {
   const [toast, setToast] = useState<string | null>(null);
   const [menuState, setMenuState] = useState<MenuState | null>(null);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [uploadingState, setUploadingState] = useState<UploadingState | null>(null);
 
   const navigate = useNavigate();
-  const { data = [] } = useGetFilesQuery();
-  const [uploadFile] = useUploadFileMutation();
+  const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector((state: RootState) => state.auth.token);
+  const { data = [] } = useGetFilesQuery(undefined, { skip: !token });
   const [deleteFile] = useDeleteFileMutation();
 
   const files: PdfFile[] = data.map((f) => ({
@@ -44,25 +56,65 @@ export function useFiles() {
     f.name.toLowerCase().includes(q.trim().toLowerCase()),
   );
 
+  const uploadingPhantom: PdfFile | null = uploadingState
+    ? {
+        id: '__uploading__',
+        name: uploadingState.name,
+        size: '—',
+        modified: '—',
+        pages: 0,
+        badge: '',
+        uploading: true,
+        progress: uploadingState.progress,
+      }
+    : null;
+
+  const filteredWithUploading = uploadingPhantom
+    ? [uploadingPhantom, ...filtered]
+    : filtered;
+
   const open = useCallback((id: string) => {
     navigate(`/editor/${id}`);
   }, [navigate]);
 
   const handleUpload = useCallback(
-    async (file: File) => {
-      try {
-        const result = await uploadFile(file).unwrap();
-        setAddedId(result.id);
-        setToast(result.name);
-        setTimeout(() => {
-          setAddedId(null);
-          setToast(null);
-        }, 3000);
-      } catch {
+    (file: File) => {
+      setUploadingState({ name: file.name, progress: 0 });
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setUploadingState({ name: file.name, progress: Math.round((e.loaded / e.total) * 100) });
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const result: FileDto = JSON.parse(xhr.responseText);
+          setUploadingState(null);
+          setAddedId(result.id);
+          setToast(result.name);
+          setTimeout(() => { setAddedId(null); setToast(null); }, 3000);
+          dispatch(filesApi.util.invalidateTags(['Files']));
+        } else {
+          setUploadingState(null);
+          console.error('Upload failed', xhr.status);
+        }
+      };
+
+      xhr.onerror = () => {
+        setUploadingState(null);
         console.error('Upload failed');
-      }
+      };
+
+      const formData = new FormData();
+      formData.append('file', file);
+      xhr.open('POST', `${API_BASE}/files/upload`);
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      xhr.send(formData);
     },
-    [uploadFile],
+    [token, dispatch],
   );
 
   const openMenu = useCallback((id: string, x: number, y: number) => {
@@ -98,8 +150,8 @@ export function useFiles() {
     q, setQ,
     view, setView,
     addedId, toast,
-    filtered,
-    filteredEmpty: filtered.length === 0,
+    filtered: filteredWithUploading,
+    filteredEmpty: filteredWithUploading.length === 0,
     totalCount: files.length,
     open, handleUpload,
     menuState, openMenu, closeMenu,

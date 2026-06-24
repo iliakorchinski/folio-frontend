@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { RootState } from '@/app/store';
 
 export interface FileDto {
   id: string;
   name: string;
   size: number;
   key: string;
+  userId: string | null;
   createdAt: string;
 }
 
@@ -14,7 +16,14 @@ export interface FileDtoWithUrl extends FileDto {
 
 export const filesApi = createApi({
   reducerPath: 'filesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000',
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token;
+      if (token) headers.set('Authorization', `Bearer ${token}`);
+      return headers;
+    },
+  }),
   tagTypes: ['Files'],
   endpoints: (builder) => ({
     getFiles: builder.query<FileDto[], void>({

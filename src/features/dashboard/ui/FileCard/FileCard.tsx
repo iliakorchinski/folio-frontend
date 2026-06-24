@@ -14,18 +14,20 @@ interface FileCardProps {
 export function FileCard({ file, isNew, onOpen, onContextMenu }: FileCardProps) {
   const { t } = useTranslation();
   const { hovered, hoverProps } = useHover();
+  const uploading = file.uploading ?? false;
 
   function handleContextMenu(e: React.MouseEvent) {
+    if (uploading) return;
     e.preventDefault();
     onContextMenu(file.id, e.clientX, e.clientY);
   }
 
   return (
     <div
-      onClick={() => onOpen(file.id)}
+      onClick={uploading ? undefined : () => onOpen(file.id)}
       onContextMenu={handleContextMenu}
-      {...hoverProps}
-      style={S.root(hovered)}
+      {...(uploading ? {} : hoverProps)}
+      style={S.root(hovered, uploading)}
     >
       <div style={S.preview}>
         {isNew && <span style={S.newBadge}>{t('files.newBadge')}</span>}
@@ -34,11 +36,17 @@ export function FileCard({ file, isNew, onOpen, onContextMenu }: FileCardProps) 
 
       <div style={S.body}>
         <div style={S.name}>{file.name}</div>
-        <div style={S.meta}>
-          <span>{t('files.pages', { count: file.pages })}</span>
-          <span>·</span>
-          <span>{file.modified}</span>
-        </div>
+        {uploading ? (
+          <div style={S.progressBar}>
+            <div style={S.progressFill(file.progress ?? 0)} />
+          </div>
+        ) : (
+          <div style={S.meta}>
+            <span>{t('files.pages', { count: file.pages })}</span>
+            <span>·</span>
+            <span>{file.modified}</span>
+          </div>
+        )}
       </div>
     </div>
   );

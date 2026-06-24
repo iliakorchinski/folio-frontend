@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { useGetFileQuery } from '@/shared/api/filesApi';
+import type { RootState } from '@/app/store';
 import { EditorTopBar } from '@/features/editor/ui/TopBar/TopBar';
 import { ToolRail } from '@/features/editor/ui/ToolRail/ToolRail';
 import { FormatBar } from '@/features/editor/ui/FormatBar/FormatBar';
@@ -11,7 +13,8 @@ type Tool = 'select' | 'add' | 'sign' | 'erase';
 
 export function EditPDFPage() {
   const { id } = useParams<{ id: string }>();
-  const { data: file } = useGetFileQuery(id!);
+  const token = useSelector((state: RootState) => state.auth.token);
+  const { data: file } = useGetFileQuery(id!, { skip: !token });
 
   const [tool, setTool] = useState<Tool>('select');
   const [zoom, setZoom] = useState(1);

@@ -1,13 +1,24 @@
-import type { ReactElement } from 'react';
 import { DashboardPage } from '@/pages/DashboardPage/DashboardPage';
 import { EditPDFPage } from '@/pages/EditPDFPage/EditPDFPage';
+import { SignInPage } from '@/pages/SignInPage/SignInPage';
+import { SignUpPage } from '@/pages/SignUpPage/SignUpPage';
+import { ProtectedRoute } from './ProtectedRoute';
 
-interface RouteConfig {
-  path: string;
-  element: ReactElement;
-}
-
-export const ROUTES: RouteConfig[] = [
-  { path: '/', element: <DashboardPage /> },
-  { path: '/editor/:id', element: <EditPDFPage /> },
+export const ROUTES = [
+  {
+    path: '/sign-in/*',
+    element: <SignInPage />,
+  },
+  {
+    path: '/sign-up/*',
+    element: <SignUpPage />,
+  },
+  {
+    path: '/',
+    element: <ProtectedRoute><DashboardPage /></ProtectedRoute>,
+  },
+  {
+    path: '/editor/:id',
+    element: <ProtectedRoute><EditPDFPage /></ProtectedRoute>,
+  },
 ];

@@ -1,13 +1,14 @@
 // @ts-check
 /** @typedef {import('react').CSSProperties} S */
 
-/** @type {(hovered: boolean) => S} */
-export const root = (hovered) => ({
+/** @type {(hovered: boolean, uploading: boolean) => S} */
+export const root = (hovered, uploading) => ({
   display: 'flex', alignItems: 'center', padding: '12px 14px',
-  borderRadius: 12, cursor: 'pointer',
+  borderRadius: 12, cursor: uploading ? 'default' : 'pointer',
   borderBottom: '1px solid #F1EEE7',
-  background: hovered ? '#FBFAF6' : 'transparent',
+  background: hovered && !uploading ? '#FBFAF6' : 'transparent',
   transition: 'background .12s',
+  opacity: uploading ? 0.75 : 1,
 });
 
 /** @type {S} */
@@ -16,7 +17,7 @@ export const info = {
 };
 
 /** @type {S} */
-export const nameGroup = { minWidth: 0 };
+export const nameGroup = { minWidth: 0, flex: 1 };
 
 /** @type {S} */
 export const nameLine = {
@@ -40,6 +41,24 @@ export const newBadge = {
 export const badge = {
   fontSize: 12.5, color: '#A29D92', marginTop: 2,
 };
+
+/** @type {S} */
+export const progressBar = {
+  marginTop: 5,
+  height: 3,
+  background: '#EAE7DF',
+  borderRadius: 2,
+  overflow: 'hidden',
+};
+
+/** @type {(progress: number) => S} */
+export const progressFill = (progress) => ({
+  height: '100%',
+  width: `${progress}%`,
+  background: '#E8502E',
+  borderRadius: 2,
+  transition: 'width 0.2s ease',
+});
 
 /** @type {S} */
 export const colPages = {

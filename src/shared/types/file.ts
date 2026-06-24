@@ -5,4 +5,6 @@ export interface PdfFile {
   size: string;
   modified: string;
   badge: string;
+  uploading?: true;
+  progress?: number;
 }

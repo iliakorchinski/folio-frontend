@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { UserButton, useUser } from '@clerk/clerk-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +35,7 @@ function NavItem({ label, active, onActivate, icon }: {
 
 export function Sidebar() {
   const { t } = useTranslation();
+  const { user } = useUser();
   const [active, setActive] = useState<NavKey>('allFiles');
 
   return (
@@ -73,9 +75,11 @@ export function Sidebar() {
       </div>
 
       <div style={S.profileRow}>
-        <div style={S.avatar}>АК</div>
+        <UserButton />
         <div style={S.profileInfo}>
-          <div style={S.profileName}>Анна Котова</div>
+          <div style={S.profileName}>
+            {user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? ''}
+          </div>
           <div style={S.profilePlan}>{t('sidebar.freePlan')}</div>
         </div>
       </div>

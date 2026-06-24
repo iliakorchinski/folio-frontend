@@ -1,9 +1,13 @@
-import { RouterProvider, StoreProvider } from './providers';
+import { ClerkProvider, RouterProvider, StoreProvider } from './providers';
+import { ClerkTokenSync } from './ClerkTokenSync';
 
 export function App() {
   return (
-    <StoreProvider>
-      <RouterProvider />
-    </StoreProvider>
+    <ClerkProvider>
+      <StoreProvider>
+        <ClerkTokenSync />
+        <RouterProvider />
+      </StoreProvider>
+    </ClerkProvider>
   );
 }
