@@ -1,0 +1,14 @@
+.git
+node_modules
+dist
+.env
+.env.local
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+.github
+coverage
+.vscode
+.idea
+*.log

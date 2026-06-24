@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "allFiles": "All Files",
+    "recent": "Recent",
+    "favorites": "Favorites",
+    "trash": "Trash"
+  },
+  "sidebar": {
+    "storage": "Storage",
+    "storageUsed": "6.4 / 10 GB",
+    "freePlan": "Free plan"
+  },
+  "topBar": {
+    "searchPlaceholder": "Search documents",
+    "upload": "Upload PDF"
+  },
+  "dropzone": {
+    "title": "Drop PDF here or click to select",
+    "hint": "Up to 50 MB · file opens in the editor immediately"
+  },
+  "files": {
+    "allFiles": "All Files",
+    "empty": "Nothing found",
+    "newBadge": "NEW",
+    "pages": "{{count}} p.",
+    "newDocumentName": "New document {{n}}.pdf",
+    "col": {
+      "document": "Document",
+      "pages": "Pages",
+      "size": "Size",
+      "modified": "Modified"
+    }
+  },
+  "badge": {
+    "draftEdited": "Edited · draft",
+    "signed": "Signed",
+    "readyToSend": "Ready to send",
+    "edited": "Edited",
+    "draft": "Draft",
+    "archive": "Archive",
+    "justUploaded": "Just uploaded"
+  },
+  "time": {
+    "justNow": "just now",
+    "hoursAgo_2": "2 hours ago",
+    "yesterday": "Yesterday",
+    "daysAgo_3": "3 days ago",
+    "weekAgo": "A week ago",
+    "weeksAgo_2": "2 weeks ago",
+    "monthAgo": "A month ago"
+  },
+  "toast": {
+    "fileUploaded": "File uploaded — open in editor?",
+    "opening": "Opening «{{name}}» in editor…"
+  }
+}

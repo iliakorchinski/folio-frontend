@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "allFiles": "Все файлы",
+    "recent": "Недавние",
+    "favorites": "Избранное",
+    "trash": "Корзина"
+  },
+  "sidebar": {
+    "storage": "Хранилище",
+    "storageUsed": "6,4 / 10 ГБ",
+    "freePlan": "Бесплатный план"
+  },
+  "topBar": {
+    "searchPlaceholder": "Поиск по документам",
+    "upload": "Загрузить PDF"
+  },
+  "dropzone": {
+    "title": "Перетащите PDF сюда или нажмите, чтобы выбрать",
+    "hint": "До 50 МБ · файл сразу откроется в редакторе"
+  },
+  "files": {
+    "allFiles": "Все файлы",
+    "empty": "Ничего не найдено",
+    "newBadge": "НОВЫЙ",
+    "pages": "{{count}} стр.",
+    "newDocumentName": "Новый документ {{n}}.pdf",
+    "col": {
+      "document": "Документ",
+      "pages": "Страниц",
+      "size": "Размер",
+      "modified": "Изменён"
+    }
+  },
+  "badge": {
+    "draftEdited": "Изменён · черновик",
+    "signed": "Подписан",
+    "readyToSend": "Готов к отправке",
+    "edited": "Изменён",
+    "draft": "Черновик",
+    "archive": "Архив",
+    "justUploaded": "Только что загружен"
+  },
+  "time": {
+    "justNow": "только что",
+    "hoursAgo_2": "2 часа назад",
+    "yesterday": "Вчера",
+    "daysAgo_3": "3 дня назад",
+    "weekAgo": "Неделю назад",
+    "weeksAgo_2": "2 недели назад",
+    "monthAgo": "Месяц назад"
+  },
+  "toast": {
+    "fileUploaded": "Файл загружен — открыть в редакторе?",
+    "opening": "Открываем «{{name}}» в редакторе…"
+  }
+}
